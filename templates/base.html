@@ -1,0 +1,293 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homeily - {% block title %}{% endblock %}</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images\favicon.png' %}">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        /* Honeycomb Theme Variables */
+        :root {
+            --hc-primary: #FFB300;     /* Honeycomb Gold */
+            --hc-primary-hover: #F57F17; /* Deep Amber */
+            --hc-dark: #261f18;        /* Very Dark Brown */
+            --hc-light: #FFFCF5;       /* Warm Off-White */
+            --hc-accent: #FFE082;      /* Light Gold Background */
+            --hc-border: #FFECB3;      /* Subtle Gold Border */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--hc-light);
+            color: var(--hc-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: var(--hc-dark);
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            font-family: 'Pacifico', cursive;
+            font-weight: 400;
+            color: var(--hc-primary) !important;
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+            letter-spacing: 1px;
+        }
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+        .navbar-brand i {
+            color: var(--hc-primary);
+        }
+        .nav-link {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85) !important;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 179, 0, 0.15);
+            color: var(--hc-primary) !important;
+        }
+
+        /* Card Elements */
+        .card {
+            border: 1px solid var(--hc-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: #fff;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(255, 179, 0, 0.12);
+            border-color: var(--hc-primary);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--hc-primary);
+            color: var(--hc-dark);
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: var(--hc-primary-hover);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(245, 127, 23, 0.3);
+        }
+        .btn-outline-primary {
+            color: var(--hc-dark);
+            border: 2px solid var(--hc-primary);
+            font-weight: 600;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--hc-primary);
+            color: var(--hc-dark);
+            border-color: var(--hc-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 179, 0, 0.3);
+        }
+
+        /* Utilities */
+        .text-primary { color: var(--hc-primary) !important; }
+        .text-dark { color: var(--hc-dark) !important; }
+        .bg-primary-subtle { background-color: var(--hc-accent) !important; }
+        
+        /* Footer Styling */
+        .footer {
+            background-color: var(--hc-dark);
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: auto;
+            border-top: 4px solid var(--hc-primary);
+        }
+        .footer h5 {
+            font-family: 'Pacifico', cursive;
+            color: #fff;
+            font-weight: 400;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
+        }
+        .footer h5:not(:first-child), .footer .col-lg-4:not(:first-child) h5 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            letter-spacing: normal;
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: var(--hc-primary);
+        }
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+        }
+        .social-icons a:hover {
+            background-color: var(--hc-primary);
+            color: var(--hc-dark);
+            transform: translateY(-3px);
+        }
+        .footer-bottom {
+            background-color: rgba(0,0,0,0.2);
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <i class="bi bi-house-heart-fill"></i>
+                Homeily
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list text-white fs-2"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto gap-2">
+    <li class="nav-item">
+        <a class="nav-link" href="/">
+            <i class="bi bi-grid-fill me-1"></i> Home
+        </a>
+    </li>
+    
+    <!-- Dynamic Auth Links -->
+    {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard/">
+                <i class="bi bi-person-lines-fill me-1"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link text-white opacity-75 border-start border-secondary ms-2 ps-3">
+                Hello, {{ user.username }}
+            </span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-warning" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
+            </a>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-warning fw-bold" href="{% url 'register' %}">
+                Register
+            </a>
+        </li>
+    {% endif %}
+</ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5 flex-grow-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer pt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-house-heart-fill text-primary"></i> Homeily
+                    </h5>
+                    <p class="mb-4 text-sm">Professional and reliable home services at your fingertips. We bring expert care right to your doorstep with guaranteed satisfaction.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a href="/"><i class="bi bi-chevron-right small me-1"></i> Our Services</a></li>
+                        <li><a href="/dashboard/"><i class="bi bi-chevron-right small me-1"></i> Dashboard</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right small me-1"></i> About Us</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right small me-1"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-12">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-3">
+                        <li class="d-flex align-items-start gap-3">
+                            <i class="bi bi-geo-alt-fill text-primary fs-5 mt-1"></i>
+                            <div>
+                                <strong class="d-block text-white">Office Location</strong>
+                                 Kumily Rd, near Taxi Stand,  Kanjirappally, Kerala 686506
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-start gap-3">
+                            <i class="bi bi-telephone-fill text-primary fs-5 mt-1"></i>
+                            <div>
+                                <strong class="d-block text-white">Phone</strong>
+                                <a href="tel:+919061288889">+91 09061288889</a>
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-start gap-3">
+                            <i class="bi bi-envelope-fill text-primary fs-5 mt-1"></i>
+                            <div>
+                                <strong class="d-block text-white">Email</strong>
+                                <a href="mailto:support@homeily.com">support@homeily.com</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom text-center mt-5">
+            <div class="container">
+                <p class="mb-0">&copy; 2026 Homeily. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

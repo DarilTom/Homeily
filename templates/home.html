@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Home Services{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="fw-bold mb-3">Professional <span style="color: var(--hc-primary);">Home Services</span></h1>
+    <p class="text-muted fs-5 mx-auto" style="max-width: 600px;">Expert care for your home, just a click away. Select a service below to find the best professionals near you.</p>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for service in services %}
+    <div class="col">
+        <div class="card h-100 position-relative">
+            <!-- Decorative honeycomb accent -->
+            <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
+                <i class="bi bi-hexagon-fill fs-1" style="color: var(--hc-primary);"></i>
+            </div>
+            
+            <div class="card-body p-4 d-flex flex-column z-1">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="service-icon-container bg-primary-subtle p-3 rounded-circle me-3 shadow-sm" data-service-name="{{ service.name }}">
+                        <i class="bi bi-wrench-adjustable fs-4 text-dark"></i>
+                    </div>
+                    <h3 class="card-title h5 mb-0 fw-bold">{{ service.name }}</h3>
+                </div>
+                <p class="card-text text-muted flex-grow-1" style="line-height: 1.6;">{{ service.description }}</p>
+                
+                <a href="/workers/{{ service.id }}/" class="btn btn-outline-primary w-100 mt-4 rounded-pill">
+                    View Professionals <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <div class="text-muted">
+            <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+            <h4>No services available at the moment.</h4>
+            <p>Please check back later.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Dynamic icon assignment based on service name
+    const iconMap = {
+        'clean': 'bi-stars',
+        'plumb': 'bi-droplet-fill',
+        'electric': 'bi-lightning-charge-fill',
+        'paint': 'bi-brush-fill',
+        'repair': 'bi-tools',
+        'ac': 'bi-snow',
+        'appliance': 'bi-plug-fill',
+        'carpenter': 'bi-hammer',
+        'pest': 'bi-bug-fill',
+        'garden': 'bi-flower1',
+        'move': 'bi-truck'
+    };
+    
+    document.querySelectorAll('.service-icon-container').forEach(container => {
+        const name = container.getAttribute('data-service-name').toLowerCase();
+        let matchedIcon = 'bi-wrench-adjustable'; // default
+        
+        for (const [key, iconClass] of Object.entries(iconMap)) {
+            if (name.includes(key)) {
+                matchedIcon = iconClass;
+                break;
+            }
+        }
+        
+        container.querySelector('i').className = `bi ${matchedIcon} fs-4 text-dark`;
+    });
+});
+</script>
+{% endblock %}

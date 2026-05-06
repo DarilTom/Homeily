@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center mt-4 mb-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+            
+            <!-- Decorative honeycomb pattern header -->
+            <div class="bg-primary-subtle p-4 pb-5 text-center position-relative">
+                <a href="/dashboard/" class="text-decoration-none text-dark position-absolute top-0 start-0 m-3 px-3 py-1 bg-white rounded-pill shadow-sm">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+                <i class="bi bi-hexagon-fill position-absolute text-white" style="font-size: 10rem; right: -30px; top: -30px; opacity: 0.3;"></i>
+                
+                <div class="position-relative z-1 mt-4">
+                    <div class="bg-white d-inline-flex p-3 rounded-circle shadow-sm mb-3">
+                        <i class="bi bi-pencil-square fs-2" style="color: var(--hc-primary);"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">Edit Profile</h3>
+                </div>
+            </div>
+            
+            <div class="card-body p-4 p-md-5 bg-white position-relative" style="margin-top: -20px; border-radius: 20px 20px 0 0;">
+                
+                <form method="POST" class="needs-validation">
+                    {% csrf_token %}
+                    
+                    <h6 class="fw-bold text-muted mb-3 text-uppercase small">Personal Details</h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold small">First Name</label>
+                            <input type="text" name="first_name" class="form-control bg-light border-0" value="{{ u_form.first_name.value|default:'' }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold small">Email Address</label>
+                            <input type="email" name="email" class="form-control bg-light border-0" value="{{ u_form.email.value|default:'' }}">
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-muted mt-4 mb-3 text-uppercase small">Contact Information</h6>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Phone Number</label>
+                        <input type="text" name="phone" class="form-control bg-light border-0" value="{{ p_form.phone.value|default:'' }}">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Service Location (Address)</label>
+                        <textarea name="address" class="form-control bg-light border-0" rows="3">{{ p_form.address.value|default:'' }}</textarea>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm fw-bold">
+                            Save Changes <i class="bi bi-check-circle ms-1"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Available Workers{% endblock %}
+
+{% block content %}
+<div class="mb-5 d-flex flex-column align-items-center text-center">
+    <a href="/" class="text-decoration-none mb-3 badge bg-primary-subtle text-dark rounded-pill px-3 py-2">
+        <i class="bi bi-arrow-left me-1"></i> Back to Services
+    </a>
+    <h2 class="fw-bold mb-2">Available Professionals</h2>
+    <p class="text-muted" style="max-width: 500px;">Select an expert for your service. All our professionals are verified and highly rated.</p>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+    {% for worker in workers %}
+    <div class="col">
+        <div class="card h-100 text-center">
+            <div class="pt-4 px-4 pb-0 position-relative">
+                <!-- Hexagon decorative background behind avatar -->
+                <div class="position-absolute top-50 start-50 translate-middle mt-2" style="z-index: 0; opacity: 0.15;">
+                    <i class="bi bi-hexagon-fill" style="font-size: 8rem; color: var(--hc-primary);"></i>
+                </div>
+                
+                <div class="position-relative z-1">
+                    {% if worker.image %}
+                    <img src="{{ worker.image.url }}" class="rounded-circle object-fit-cover shadow" alt="{{ worker.name }}" style="width: 120px; height: 120px; border: 4px solid var(--hc-light);">
+                    {% else %}
+                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mx-auto shadow" style="width: 120px; height: 120px; border: 4px solid var(--hc-border);">
+                        <i class="bi bi-person text-secondary" style="font-size: 3.5rem;"></i>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body p-4 d-flex flex-column z-1">
+                <h4 class="card-title h5 fw-bold mb-1">{{ worker.name }}</h4>
+                <div class="d-flex justify-content-center align-items-center gap-2 mb-3 mt-2">
+                    <span class="badge bg-primary-subtle text-dark border border-warning rounded-pill px-3 py-2">
+                        <i class="bi bi-star-fill text-warning me-1"></i> {{ worker.experience }} yrs exp
+                    </span>
+                </div>
+                
+                <ul class="list-unstyled text-start text-muted small mb-4 flex-grow-1 p-3 bg-light rounded-3">
+                    <li class="mb-2 d-flex align-items-center">
+                        <i class="bi bi-telephone-fill text-primary me-2"></i>{{ worker.phone }}
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <i class="bi bi-shield-check text-success me-2"></i>Verified Professional
+                    </li>
+                </ul>
+                
+                <a href="/book/{{ worker.id }}/" class="btn btn-primary w-100 rounded-pill">
+                    Book Now
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <div class="text-muted p-5 bg-white rounded-4 shadow-sm">
+            <i class="bi bi-people fs-1 d-block mb-3 text-primary"></i>
+            <h4>No professionals available right now.</h4>
+            <p>Please select another service or check back later.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

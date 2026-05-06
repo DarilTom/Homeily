@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Book {{ worker.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center h-100 mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+            
+            <!-- Decorative honeycomb pattern header -->
+            <div class="bg-primary-subtle p-4 pb-5 text-center position-relative">
+                <a href="javascript:history.back()" class="text-decoration-none text-dark position-absolute top-0 start-0 m-3 px-3 py-1 bg-white rounded-pill shadow-sm">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+                <i class="bi bi-hexagon-fill position-absolute text-white" style="font-size: 15rem; right: -50px; top: -50px; opacity: 0.3;"></i>
+                
+                <div class="position-relative z-1 mt-4">
+                    <div class="bg-white d-inline-flex p-3 rounded-circle shadow-sm mb-3">
+                        <i class="bi bi-calendar-check-fill fs-2" style="color: var(--hc-primary);"></i>
+                    </div>
+                    <h2 class="fw-bold mb-0">Schedule Booking</h2>
+                </div>
+            </div>
+            
+            <div class="card-body p-4 p-md-5 bg-white position-relative" style="margin-top: -20px; border-radius: 20px 20px 0 0;">
+                <p class="text-muted text-center mb-4 fs-5">You are booking an appointment with <span class="fw-bold text-dark">{{ worker.name }}</span></p>
+                
+                <form method="POST" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label for="booking_date" class="form-label fw-bold">Select Date & Time</label>
+                        <div class="input-group input-group-lg shadow-sm rounded-3 overflow-hidden">
+                            <span class="input-group-text bg-light border-0" style="border-right: 2px solid var(--hc-border) !important;">
+                                <i class="bi bi-calendar-date text-dark"></i>
+                            </span>
+                            <input type="datetime-local" class="form-control border-0 bg-light" id="booking_date" name="booking_date" required>
+                        </div>
+                        <div class="invalid-feedback mt-2">
+                            <i class="bi bi-exclamation-circle-fill"></i> Please select a valid date and time for your booking.
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm position-relative overflow-hidden group">
+                            Confirm Booking <i class="bi bi-check2-circle ms-1"></i>
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <span class="badge bg-light text-dark border p-2 px-3 rounded-pill">
+                        <i class="bi bi-shield-lock-fill text-success me-1"></i> Secure booking. Payment collected after service.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Find the input box
+        const dateInput = document.getElementById('booking_date');
+        
+        // Get the exact current date and time
+        const now = new Date();
+        
+        // Adjust for local timezone differences so it is perfectly accurate
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        
+        // Format it exactly how HTML expects (YYYY-MM-DDThh:mm)
+        const formattedNow = now.toISOString().slice(0, 16);
+        
+        // Lock the calendar so they cannot pick anything before this exact minute!
+        dateInput.min = formattedNow;
+    });
+</script>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation script
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+{% endblock %}

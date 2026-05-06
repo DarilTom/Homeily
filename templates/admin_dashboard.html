@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Platform Administration{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center mb-4 border-bottom pb-3 mt-3">
+    <div class="d-flex align-items-center gap-3">
+        <div class="bg-dark p-3 rounded-circle shadow-sm">
+            <i class="bi bi-shield-lock-fill fs-3 text-white"></i>
+        </div>
+        <div>
+            <h2 class="page-title mb-1 fw-bold">Command Center</h2>
+            <p class="text-muted mb-0">System Overview & Analytics</p>
+        </div>
+    </div>
+</div>
+
+<!-- Analytics Cards -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 bg-primary text-white h-100 position-relative overflow-hidden">
+            <i class="bi bi-people-fill position-absolute text-white-50" style="font-size: 6rem; right: -10px; bottom: -20px; opacity: 0.3;"></i>
+            <div class="card-body p-4 position-relative z-1">
+                <h6 class="fw-bold text-uppercase letter-spacing-1 mb-1 text-white-50">Total Customers</h6>
+                <h2 class="display-4 fw-bold mb-0">{{ total_customers }}</h2>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 bg-success text-white h-100 position-relative overflow-hidden">
+            <i class="bi bi-briefcase-fill position-absolute text-white-50" style="font-size: 6rem; right: -10px; bottom: -20px; opacity: 0.3;"></i>
+            <div class="card-body p-4 position-relative z-1">
+                <h6 class="fw-bold text-uppercase letter-spacing-1 mb-1 text-white-50">Active Providers</h6>
+                <h2 class="display-4 fw-bold mb-0">{{ total_workers }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 bg-dark text-white h-100 position-relative overflow-hidden">
+            <i class="bi bi-calendar-check-fill position-absolute text-white-50" style="font-size: 6rem; right: -10px; bottom: -20px; opacity: 0.3;"></i>
+            <div class="card-body p-4 position-relative z-1">
+                <h6 class="fw-bold text-uppercase letter-spacing-1 mb-1 text-white-50">Total Bookings</h6>
+                <h2 class="display-4 fw-bold mb-0">{{ total_bookings }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Quick Management Actions -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-bottom-0 p-4 pb-0">
+                <h5 class="fw-bold mb-0"><i class="bi bi-gear-fill text-secondary me-2"></i> Database Management</h5>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted small mb-4">Select a module to add, edit, or remove records from the system.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <!-- Links to the default Django Admin routes -->
+                    <a href="/admin/auth/user/" target="_blank" class="btn btn-outline-primary rounded-pill px-4 shadow-sm fw-bold">
+                        <i class="bi bi-people me-2"></i>Manage Users
+                    </a>
+                    <a href="/admin/core/worker/" target="_blank" class="btn btn-outline-success rounded-pill px-4 shadow-sm fw-bold">
+                        <i class="bi bi-briefcase me-2"></i>Manage Providers
+                    </a>
+                    <a href="/admin/core/service/" target="_blank" class="btn btn-outline-info rounded-pill px-4 shadow-sm fw-bold">
+                        <i class="bi bi-tools me-2"></i>Manage Services
+                    </a>
+                    <a href="/admin/core/booking/" target="_blank" class="btn btn-outline-dark rounded-pill px-4 shadow-sm fw-bold">
+                        <i class="bi bi-calendar-check me-2"></i>Manage Bookings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity Table -->
+<div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden mb-5">
+    <div class="card-header bg-white border-bottom-0 p-4 pb-0 d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0"><i class="bi bi-activity text-primary me-2"></i> Recent Platform Activity</h5>
+    </div>
+    
+    <div class="card-body p-0 mt-3">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="py-3 px-4 fw-bold text-dark border-0">Customer</th>
+                        <th scope="col" class="py-3 fw-bold text-dark border-0">Provider Assigned</th>
+                        <th scope="col" class="py-3 fw-bold text-dark border-0">Date & Time</th>
+                        <th scope="col" class="py-3 px-4 fw-bold text-dark border-0">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="border-top-0">
+                    {% for booking in recent_bookings %}
+                    <tr>
+                        <td class="px-4 py-3 fw-bold text-dark">
+                            {{ booking.user.first_name|default:booking.user.username }}
+                        </td>
+                        <td class="py-3">
+                            <span class="text-muted"><i class="bi bi-tools me-1"></i> {{ booking.worker.name }}</span>
+                        </td>
+                        <td class="py-3 text-muted fw-medium">
+                            {{ booking.booking_date|date:"M d, Y - g:i A" }}
+                        </td>
+                        <td class="px-4 py-3">
+                            {% if booking.status == 'Completed' %}
+                                <span class="badge bg-success">Completed</span>
+                            {% elif booking.status == 'Accepted' %}
+                                <span class="badge bg-info">Accepted</span>
+                            {% elif booking.status == 'Cancelled' %}
+                                <span class="badge bg-danger">Cancelled</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-5 text-muted">No bookings have been made yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
